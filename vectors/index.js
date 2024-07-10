@@ -1,34 +1,31 @@
-window.onload = function () {
-  const canvas = document.querySelector(".artboard");
-  const context = canvas.getContext("2d");
-  let width = canvas.width = innerWidth,
-    height = canvas.height = innerHeight;
+window.onload = (_) => {
+  // Init
+  let canvas = document.querySelector("canvas"),
+    context = canvas.getContext("2d"),
+    width = canvas.width = innerWidth,
+    height = canvas.height = innerHeight,
+    // accel = new Vector(0.1, 0.1),
+    p = new Particle(width / 2, height / 2, 10, Math.PI / 6),
+    gravity = new Vector(0.0, 0.1);
 
-  // set up env vars
-  let centerX = width * 0.5;
-  let centerY = height * 0.5;
+  requestAnimationFrame(update);
 
-  render();
-
-  function draw() {
+  function update() {
     context.clearRect(0, 0, width, height);
-    context.save();
-    context.translate(centerX, centerY);
-
+    // p.accelerate(accel);
+    if (p.position.x <= 5 || p.position.x >= (width - 5)) {
+      p.velocity.x *= -0.9;
+      p.position.x = 0;
+    }
+    if (p.position.y <= 5 || p.position.y >= (height - 5)) {
+      p.position.y = 0;
+      p.velocity.y *= -0.9;
+    }
+    p.accelerate(gravity);
+    p.update();
     context.beginPath();
-    context.arc(0, 0, 40, 0, Math.PI * 2);
+    context.arc(p.position.x, p.position.y, 10, 0, Math.PI * 2, false);
     context.fill();
-    context.restore();
+    requestAnimationFrame(update);
   }
-  function render() {
-    draw();
-    requestAnimationFrame(render);
-  }
-  addEventListener("resize", () => {
-    width = canvas.width = innerWidth;
-    height = canvas.height = innerHeight;
-
-    centerX = width * 0.5;
-    centerY = height * 0.5;
-  });
 };

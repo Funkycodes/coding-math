@@ -113,7 +113,7 @@ class DottedCircle extends ArtBoard {
     super.update();
   }
 }
-
+new DottedCircle();
 class Line extends ArtBoard {
   draw() {
     this.context.clearRect(0, 0, this.width, this.height);
@@ -203,7 +203,7 @@ class Cursor extends ArtBoard {
   }
 }
 
-new Cursor();
+// new Cursor();
 
 function lerp(a, b, ease) {
   return a + (b - a) * ease;
